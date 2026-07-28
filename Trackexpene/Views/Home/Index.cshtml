@@ -1,0 +1,790 @@
+﻿@model Trackexpense.Models.DashboardViewModel
+
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+
+    <!-- ============================= -->
+    <!-- DASHBOARD HEADER -->
+    <!-- ============================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">Dashboard</h2>
+
+            <p class="text-muted mb-0">
+                Overview of your income and expenses
+            </p>
+        </div>
+
+        <a asp-controller="Expenses"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Add Transaction
+        </a>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- SUMMARY CARDS -->
+    <!-- ============================= -->
+
+    <div class="row g-3 mb-4">
+
+        <!-- Total Income -->
+
+        <div class="col-md-6 col-lg">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-2">
+                        Total Income
+                    </p>
+
+                    <h3 class="text-success fw-bold">
+                        ₹@Model.TotalIncome.ToString("N2")
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Expense -->
+
+        <div class="col-md-6 col-lg">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-2">
+                        Total Expense
+                    </p>
+
+                    <h3 class="text-danger fw-bold">
+                        ₹@Model.TotalExpense.ToString("N2")
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Balance -->
+
+        <div class="col-md-6 col-lg">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-2">
+                        Balance
+                    </p>
+
+                    @if (Model.Balance >= 0)
+                    {
+                        <h3 class="text-primary fw-bold">
+                            ₹@Model.Balance.ToString("N2")
+                        </h3>
+                    }
+                    else
+                    {
+                        <h3 class="text-danger fw-bold">
+                            -₹@Math.Abs(Model.Balance).ToString("N2")
+                        </h3>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Personal Expense -->
+
+        <div class="col-md-6 col-lg">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-2">
+                        Personal Expense
+                    </p>
+
+                    <h3 class="fw-bold">
+                        ₹@Model.PersonalExpense.ToString("N2")
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Family Expense -->
+
+        <div class="col-md-6 col-lg">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <p class="text-muted mb-2">
+                        Family Expense
+                    </p>
+
+                    <h3 class="fw-bold">
+                        ₹@Model.FamilyExpense.ToString("N2")
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- MONTHLY SALARY OVERVIEW -->
+    <!-- ============================= -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        Monthly Salary Overview
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+                        Track this month's spending against your salary
+                    </p>
+
+                </div>
+
+                <a asp-controller="Salary"
+                   asp-action="Create"
+                   class="btn btn-sm btn-outline-primary">
+                    Set / Update Salary
+                </a>
+
+            </div>
+
+
+            @if (Model.MonthlySalary > 0)
+            {
+
+                <!-- Salary Cards -->
+
+                <div class="row g-3 mb-4">
+
+
+                    <!-- Monthly Salary -->
+
+                    <div class="col-md-4">
+
+                        <div class="border rounded p-3 h-100">
+
+                            <p class="text-muted mb-2">
+                                Monthly Salary
+                            </p>
+
+                            <h4 class="fw-bold text-success mb-0">
+                                ₹@Model.MonthlySalary.ToString("N2")
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- This Month Expense -->
+
+                    <div class="col-md-4">
+
+                        <div class="border rounded p-3 h-100">
+
+                            <p class="text-muted mb-2">
+                                This Month Expense
+                            </p>
+
+                            <h4 class="fw-bold text-danger mb-0">
+                                ₹@Model.ThisMonthExpense.ToString("N2")
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Remaining Salary -->
+
+                    <div class="col-md-4">
+
+                        <div class="border rounded p-3 h-100">
+
+                            <p class="text-muted mb-2">
+                                Remaining Salary
+                            </p>
+
+                            @if (Model.RemainingSalary >= 0)
+                            {
+                                <h4 class="fw-bold text-primary mb-0">
+
+                                    ₹@Model.RemainingSalary.ToString("N2")
+
+                                </h4>
+                            }
+                            else
+                            {
+                                <h4 class="fw-bold text-danger mb-0">
+
+                                    -₹@Math.Abs(Model.RemainingSalary).ToString("N2")
+
+                                </h4>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Salary Used -->
+                var progressPercentage =
+                                    Model.SalaryUsedPercentage > 100
+                                    ? 100
+                                    : Model.SalaryUsedPercentage;
+
+
+                <div class="d-flex justify-content-between mb-2">
+
+                    <span class="fw-semibold">
+                        Salary Used
+                    </span>
+
+                    <span class="fw-bold">
+
+                        @Model.SalaryUsedPercentage.ToString("0.00")%
+
+                    </span>
+
+                </div>
+
+
+                <!-- Progress Bar -->
+
+                <div class="progress mb-3"
+                     style="height: 18px;">
+
+                    @if (Model.SalaryExceeded)
+                    {
+
+                        <div class="progress-bar bg-danger"
+                             style="width: @(progressPercentage)%">
+                        </div>
+
+                    }
+                    else if (Model.SalaryUsedPercentage >= 80)
+                    {
+
+                        <div class="progress-bar bg-warning"
+                             style="width: @(progressPercentage)%">
+                        </div>
+
+                    }
+                    else
+                    {
+
+                        <div class="progress-bar bg-success"
+                             style="width: @(progressPercentage)%">
+                        </div>
+
+                    }
+
+                </div>
+
+
+                <!-- Salary Exceeded Warning -->
+                @if (Model.SalaryExceeded)
+                {
+
+                    <div class="alert alert-danger mb-0">
+
+                        <strong>⚠ Warning!</strong>
+
+                        Your expenses have exceeded your monthly salary by
+
+                        <strong>
+                            ₹@Math.Abs(Model.RemainingSalary).ToString("N2")
+                        </strong>.
+
+                    </div>
+
+                }
+                else if (Model.SalaryUsedPercentage >= 80)
+                {
+
+                    <div class="alert alert-warning mb-0">
+
+                        <strong>⚠ Be careful!</strong>
+
+                        You have already used
+
+                        <strong>
+                            @Model.SalaryUsedPercentage.ToString("0.00")%
+                        </strong>
+
+                        of your monthly salary.
+
+                    </div>
+
+                }
+
+            }
+            else
+            {
+
+                <!-- No Salary -->
+
+                <div class="text-center py-4">
+
+                    <h5>
+                        No salary set for this month
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Add your monthly salary to compare it
+                        with your expenses.
+
+                    </p>
+
+                    <a asp-controller="Salary"
+                       asp-action="Create"
+                       class="btn btn-primary">
+
+                        Set Monthly Salary
+
+                    </a>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- CHARTS -->
+    <!-- ============================= -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- Category Chart -->
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold">
+                        Category-wise Expenses
+                    </h5>
+
+                    <p class="text-muted small">
+                        See where your money is being spent
+                    </p>
+
+                    <div style="height: 300px;">
+
+                        <canvas id="categoryChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Personal vs Family Chart -->
+
+        <div class="col-lg-5">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold">
+                        Personal vs Family
+                    </h5>
+
+                    <p class="text-muted small">
+                        Compare personal and family expenses
+                    </p>
+
+                    <div style="height: 300px;">
+
+                        <canvas id="expenseForChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- RECENT TRANSACTIONS -->
+    <!-- ============================= -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 pt-4 px-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        Recent Transactions
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+                        Your latest income and expenses
+                    </p>
+
+                </div>
+
+
+                <a asp-controller="Expenses"
+                   asp-action="Index"
+                   class="btn btn-sm btn-outline-primary">
+
+                    View All
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body px-4">
+
+            @if (Model.RecentTransactions.Any())
+            {
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>Title</th>
+
+                                <th>Category</th>
+
+                                <th>Type</th>
+
+                                <th>For</th>
+
+                                <th>Date</th>
+
+                                <th class="text-end">
+                                    Amount
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var item in Model.RecentTransactions)
+                            {
+
+                                <tr>
+
+                                    <td class="fw-semibold">
+
+                                        @item.Title
+
+                                    </td>
+
+
+                                    <td>
+
+                                        @item.Category
+
+                                    </td>
+
+
+                                    <td>
+
+                                        @if (item.Type == "Income")
+                                        {
+
+                                            <span class="badge bg-success">
+                                                Income
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="badge bg-danger">
+                                                Expense
+                                            </span>
+
+                                        }
+
+                                    </td>
+
+
+                                    <td>
+
+                                        @if (item.ExpenseFor == "Family")
+                                        {
+
+                                            <span class="badge bg-info text-dark">
+                                                Family
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="badge bg-secondary">
+                                                Personal
+                                            </span>
+
+                                        }
+
+                                    </td>
+
+
+                                    <td>
+
+                                        @item.Date.ToString("dd MMM yyyy")
+
+                                    </td>
+
+
+                                    <td class="text-end fw-bold">
+
+                                        @if (item.Type == "Income")
+                                        {
+
+                                            <span class="text-success">
+
+                                                +₹@item.Amount.ToString("N2")
+
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="text-danger">
+
+                                                -₹@item.Amount.ToString("N2")
+
+                                            </span>
+
+                                        }
+
+                                    </td>
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            }
+            else
+            {
+
+                <div class="text-center py-5">
+
+                    <h5>
+                        No transactions yet
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Add your first transaction to see your dashboard.
+
+                    </p>
+
+                    <a asp-controller="Expenses"
+                       asp-action="Create"
+                       class="btn btn-primary">
+
+                        Add Transaction
+
+                    </a>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- CHART JS -->
+<!-- ============================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const categoryLabels =
+            @Html.Raw(JsonSerializer.Serialize(Model.CategoryLabels));
+
+    const categoryAmounts =
+            @Html.Raw(JsonSerializer.Serialize(Model.CategoryAmounts));
+
+
+    const expenseForLabels =
+            @Html.Raw(JsonSerializer.Serialize(Model.ExpenseForLabels));
+
+    const expenseForAmounts =
+            @Html.Raw(JsonSerializer.Serialize(Model.ExpenseForAmounts));
+
+
+    // Category Chart
+
+    const categoryCanvas =
+        document.getElementById('categoryChart');
+
+    if (categoryCanvas && categoryLabels.length > 0) {
+
+        new Chart(categoryCanvas, {
+
+            type: 'bar',
+
+            data: {
+
+                labels: categoryLabels,
+
+                datasets: [{
+
+                    label: 'Expense Amount',
+
+                    data: categoryAmounts,
+
+                    borderWidth: 1
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    // Personal vs Family Chart
+
+    const expenseCanvas =
+        document.getElementById('expenseForChart');
+
+    if (expenseCanvas && expenseForLabels.length > 0) {
+
+        new Chart(expenseCanvas, {
+
+            type: 'doughnut',
+
+            data: {
+
+                labels: expenseForLabels,
+
+                datasets: [{
+
+                    data: expenseForAmounts,
+
+                    borderWidth: 1
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false
+
+            }
+
+        });
+
+    }
+
+</script>

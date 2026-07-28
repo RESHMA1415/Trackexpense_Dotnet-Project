@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Trackexpense.Models.Salary>
+
+@{
+    ViewData["Title"] = "Salary";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Monthly Salary</h2>
+            <p class="text-muted mb-0">
+                Manage your monthly salary
+            </p>
+        </div>
+
+        <a asp-controller="Salary"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Set Salary
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th class="text-end">Salary</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                var monthName = new DateTime(
+                                    item.Year,
+                                    item.Month,
+                                    1
+                                ).ToString("MMMM");
+
+                                <tr>
+
+                                    <td class="fw-semibold">
+                                        @monthName
+                                    </td>
+
+                                    <td>
+                                        @item.Year
+                                    </td>
+
+                                    <td class="text-end fw-bold text-success">
+                                        ₹@item.Amount.ToString("N2")
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+
+                    <h5>No salary added yet</h5>
+
+                    <p class="text-muted">
+                        Set your monthly salary to compare it with your expenses.
+                    </p>
+
+                    <a asp-controller="Salary"
+                       asp-action="Create"
+                       class="btn btn-primary">
+                        Set Monthly Salary
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

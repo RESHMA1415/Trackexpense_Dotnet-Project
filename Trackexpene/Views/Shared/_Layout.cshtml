@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Smart Expense Tracker</title>
+
+    <script type="importmap"></script>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/Trackexpense.styles.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+
+            <div class="container">
+
+                <!-- Logo / Project Name -->
+                <a class="navbar-brand fw-bold"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    💰 Smart Expense Tracker
+
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+
+                <!-- Menu -->
+                <div class="collapse navbar-collapse"
+                     id="mainNavbar">
+
+                    <ul class="navbar-nav ms-auto">
+
+                        <!-- Dashboard -->
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Dashboard
+
+                            </a>
+                        </li>
+
+                        <!-- Transactions -->
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="Expenses"
+                               asp-action="Index">
+
+                                Transactions
+
+                            </a>
+                        </li>
+
+                        <!-- Add Transaction -->
+                        <li class="nav-item ms-lg-2">
+
+                            <a class="btn btn-primary"
+                               asp-controller="Expenses"
+                               asp-action="Create">
+
+                                + Add Transaction
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+                       <a class="nav-link"
+                        asp-controller="Salary"
+                        asp-action="Index">
+                         Salary
+                    </a>
+                    </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <main role="main"
+              class="py-4">
+
+            @RenderBody()
+
+        </main>
+
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="border-top text-muted mt-5">
+
+        <div class="container py-3 text-center">
+
+            &copy; 2026 Smart Expense Tracker
+
+        </div>
+
+    </footer>
+
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

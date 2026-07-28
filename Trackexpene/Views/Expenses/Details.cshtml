@@ -1,0 +1,166 @@
+@model Trackexpense.Models.Expense
+
+@{
+    ViewData["Title"] = "Transaction Details";
+}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+
+                        <div>
+                            <h2 class="mb-1">Transaction Details</h2>
+                            <p class="text-muted mb-0">
+                                View complete transaction information
+                            </p>
+                        </div>
+
+                        @if (Model.Type == "Income")
+                        {
+                            <span class="badge bg-success fs-6">
+                                Income
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger fs-6">
+                                Expense
+                            </span>
+                        }
+
+                    </div>
+
+                    <hr />
+
+                    <!-- Title -->
+                    <div class="row py-2">
+                        <div class="col-sm-4 text-muted">
+                            Title
+                        </div>
+
+                        <div class="col-sm-8 fw-semibold">
+                            @Model.Title
+                        </div>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="row py-2">
+                        <div class="col-sm-4 text-muted">
+                            Amount
+                        </div>
+
+                        <div class="col-sm-8">
+
+                            @if (Model.Type == "Income")
+                            {
+                                <span class="text-success fw-bold fs-5">
+                                    +₹@Model.Amount.ToString("N2")
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-danger fw-bold fs-5">
+                                    -₹@Model.Amount.ToString("N2")
+                                </span>
+                            }
+
+                        </div>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="row py-2">
+                        <div class="col-sm-4 text-muted">
+                            Category
+                        </div>
+
+                        <div class="col-sm-8">
+                            @Model.Category
+                        </div>
+                    </div>
+
+                    <!-- Expense For -->
+                    <div class="row py-2">
+                        <div class="col-sm-4 text-muted">
+                            Expense For
+                        </div>
+
+                        <div class="col-sm-8">
+
+                            @if (Model.ExpenseFor == "Family")
+                            {
+                                <span class="badge bg-info text-dark">
+                                    Family
+                                </span>
+                            }
+                            else if (Model.ExpenseFor == "Personal")
+                            {
+                                <span class="badge bg-secondary">
+                                    Personal
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="row py-2">
+                        <div class="col-sm-4 text-muted">
+                            Date
+                        </div>
+
+                        <div class="col-sm-8">
+                            @Model.Date.ToString("dd MMM yyyy")
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="row py-2">
+                        <div class="col-sm-4 text-muted">
+                            Notes
+                        </div>
+
+                        <div class="col-sm-8">
+                            @(string.IsNullOrWhiteSpace(Model.Notes)
+                                ? "-"
+                                : Model.Notes)
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2 mt-3">
+
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-primary">
+                            Edit Transaction
+                        </a>
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+                            Back to Transactions
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

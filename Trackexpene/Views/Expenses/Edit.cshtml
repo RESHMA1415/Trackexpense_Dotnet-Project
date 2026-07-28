@@ -1,0 +1,196 @@
+@model Trackexpense.Models.Expense
+
+@{
+    ViewData["Title"] = "Edit Transaction";
+}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <h2 class="mb-1">Edit Transaction</h2>
+
+                    <p class="text-muted mb-4">
+                        Update your transaction details
+                    </p>
+
+                    <form asp-action="Edit" method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3"></div>
+
+                        <!-- Hidden ID -->
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Title -->
+                        <div class="mb-3">
+                            <label asp-for="Title"
+                                   class="form-label"></label>
+
+                            <input asp-for="Title"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Title"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <!-- Amount -->
+                        <div class="mb-3">
+
+                            <label asp-for="Amount"
+                                   class="form-label"></label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">₹</span>
+
+                                <input asp-for="Amount"
+                                       class="form-control" />
+
+                            </div>
+
+                            <span asp-validation-for="Amount"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-3">
+
+                            <label asp-for="Category"
+                                   class="form-label"></label>
+
+                            <select asp-for="Category"
+                                    class="form-select">
+
+                                <option value="">
+                                    -- Select Category --
+                                </option>
+
+                                <option value="Food">Food</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Bills">Bills</option>
+                                <option value="Medical">Medical</option>
+                                <option value="Education">Education</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Salary">Salary</option>
+                                <option value="Other">Other</option>
+
+                            </select>
+
+                            <span asp-validation-for="Category"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <!-- Type -->
+                        <div class="mb-3">
+
+                            <label asp-for="Type"
+                                   class="form-label"></label>
+
+                            <select asp-for="Type"
+                                    class="form-select">
+
+                                <option value="">
+                                    -- Select Type --
+                                </option>
+
+                                <option value="Expense">Expense</option>
+                                <option value="Income">Income</option>
+
+                            </select>
+
+                            <span asp-validation-for="Type"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <!-- Expense For -->
+                        <div class="mb-3">
+
+                            <label asp-for="ExpenseFor"
+                                   class="form-label"></label>
+
+                            <select asp-for="ExpenseFor"
+                                    class="form-select">
+
+                                <option value="">
+                                    -- Select --
+                                </option>
+
+                                <option value="Personal">Personal</option>
+                                <option value="Family">Family</option>
+
+                            </select>
+
+                            <span asp-validation-for="ExpenseFor"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <!-- Date -->
+                        <div class="mb-3">
+
+                            <label asp-for="Date"
+                                   class="form-label"></label>
+
+                            <input asp-for="Date"
+                                   type="date"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Date"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="mb-4">
+
+                            <label asp-for="Notes"
+                                   class="form-label"></label>
+
+                            <textarea asp-for="Notes"
+                                      class="form-control"
+                                      rows="3"></textarea>
+
+                            <span asp-validation-for="Notes"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Update Transaction
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

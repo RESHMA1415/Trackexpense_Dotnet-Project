@@ -1,0 +1,312 @@
+@model IEnumerable<Trackexpense.Models.Expense>
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<div class="container mt-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Transactions</h2>
+            <p class="text-muted mb-0">
+                Manage and filter your income and expenses
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Add Transaction
+        </a>
+    </div>
+
+
+    <!-- Search & Filter -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <form method="get" asp-action="Index">
+
+                <div class="row g-3 align-items-end">
+
+                    <!-- Search -->
+                    <div class="col-md-4">
+                        <label class="form-label">Search</label>
+
+                        <input type="text"
+                               name="search"
+                               value="@ViewBag.Search"
+                               class="form-control"
+                               placeholder="Search title or category..." />
+                    </div>
+
+
+                    <!-- Month -->
+                    <div class="col-md-2">
+                        <label class="form-label">Month</label>
+
+                        <select name="month" class="form-select">
+
+                            <option value="">All Months</option>
+
+                            <option value="1" selected="@(ViewBag.Month == 1)">January</option>
+                            <option value="2" selected="@(ViewBag.Month == 2)">February</option>
+                            <option value="3" selected="@(ViewBag.Month == 3)">March</option>
+                            <option value="4" selected="@(ViewBag.Month == 4)">April</option>
+                            <option value="5" selected="@(ViewBag.Month == 5)">May</option>
+                            <option value="6" selected="@(ViewBag.Month == 6)">June</option>
+                            <option value="7" selected="@(ViewBag.Month == 7)">July</option>
+                            <option value="8" selected="@(ViewBag.Month == 8)">August</option>
+                            <option value="9" selected="@(ViewBag.Month == 9)">September</option>
+                            <option value="10" selected="@(ViewBag.Month == 10)">October</option>
+                            <option value="11" selected="@(ViewBag.Month == 11)">November</option>
+                            <option value="12" selected="@(ViewBag.Month == 12)">December</option>
+
+                        </select>
+                    </div>
+
+
+                    <!-- Type -->
+                    <div class="col-md-2">
+                        <label class="form-label">Type</label>
+
+                        <select name="type" class="form-select">
+
+                            <option value="">All Types</option>
+
+                            <option value="Income"
+                                    selected="@(ViewBag.Type == "Income")">
+                                Income
+                            </option>
+
+                            <option value="Expense"
+                                    selected="@(ViewBag.Type == "Expense")">
+                                Expense
+                            </option>
+
+                        </select>
+                    </div>
+
+
+                    <!-- Personal / Family -->
+                    <div class="col-md-2">
+                        <label class="form-label">For</label>
+
+                        <select name="expenseFor" class="form-select">
+
+                            <option value="">All</option>
+
+                            <option value="Personal"
+                                    selected="@(ViewBag.ExpenseFor == "Personal")">
+                                Personal
+                            </option>
+
+                            <option value="Family"
+                                    selected="@(ViewBag.ExpenseFor == "Family")">
+                                Family
+                            </option>
+
+                        </select>
+                    </div>
+
+
+                    <!-- Filter Button -->
+                    <div class="col-md-2">
+
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Filter
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                Clear
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- Transactions Table -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+
+                            <tr>
+                                <th>Title</th>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Expense For</th>
+                                <th>Date</th>
+                                <th>Notes</th>
+                                <th class="text-center">
+                                    Actions
+                                </th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td class="fw-semibold">
+                                        @item.Title
+                                    </td>
+
+                                    <td>
+                                        @if (item.Type == "Income")
+                                        {
+                                            <span class="text-success fw-semibold">
+                                                +₹@item.Amount.ToString("N2")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger fw-semibold">
+                                                -₹@item.Amount.ToString("N2")
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @item.Category
+                                    </td>
+
+
+                                    <!-- Type -->
+                                    <td>
+
+                                        @if (item.Type == "Income")
+                                        {
+                                            <span class="badge bg-success">
+                                                Income
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">
+                                                Expense
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Expense For -->
+                                    <td>
+
+                                        @if (item.ExpenseFor == "Family")
+                                        {
+                                            <span class="badge bg-info text-dark">
+                                                Family
+                                            </span>
+                                        }
+                                        else if (item.ExpenseFor == "Personal")
+                                        {
+                                            <span class="badge bg-secondary">
+                                                Personal
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                -
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Date -->
+                                    <td>
+                                        @item.Date.ToString("dd MMM yyyy")
+                                    </td>
+
+
+                                    <!-- Notes -->
+                                    <td>
+
+                                        @(string.IsNullOrWhiteSpace(item.Notes)
+                                            ? "-"
+                                            : item.Notes)
+
+                                    </td>
+
+
+                                    <!-- Actions -->
+                                    <td class="text-center text-nowrap">
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-secondary">
+                                            Details
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+
+                    <h5>No transactions found</h5>
+
+                    <p class="text-muted">
+                        Try changing your search or filter options.
+                    </p>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-primary">
+                        Clear Filters
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,142 @@
+﻿@model Trackexpense.Models.Salary
+
+@{
+    ViewData["Title"] = "Set Monthly Salary";
+}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="mb-4">
+                        <h2 class="fw-bold mb-1">Set Monthly Salary</h2>
+
+                        <p class="text-muted mb-0">
+                            Add your salary to track monthly spending
+                        </p>
+                    </div>
+
+                    <form asp-action="Create" method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <!-- Salary Amount -->
+                        <div class="mb-3">
+
+                            <label asp-for="Amount"
+                                   class="form-label">
+                                Monthly Salary
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">₹</span>
+
+                                <input asp-for="Amount"
+                                       class="form-control"
+                                       placeholder="Example: 30000"
+                                       min="0"
+                                       step="0.01" />
+
+                            </div>
+
+                            <span asp-validation-for="Amount"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Month -->
+                        <div class="mb-3">
+
+                            <label asp-for="Month"
+                                   class="form-label">
+                                Month
+                            </label>
+
+                            <select asp-for="Month"
+                                    class="form-select">
+
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+
+                            </select>
+
+                            <span asp-validation-for="Month"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Year -->
+                        <div class="mb-4">
+
+                            <label asp-for="Year"
+                                   class="form-label">
+                                Year
+                            </label>
+
+                            <input asp-for="Year"
+                                   type="number"
+                                   class="form-control"
+                                   min="2000"
+                                   max="2100" />
+
+                            <span asp-validation-for="Year"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Save Salary
+                            </button>
+
+                            <a asp-controller="Home"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

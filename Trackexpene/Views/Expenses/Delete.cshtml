@@ -1,0 +1,169 @@
+@model Trackexpense.Models.Expense
+
+@{
+    ViewData["Title"] = "Delete Transaction";
+}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+
+                        <h2 class="text-danger mb-2">
+                            Delete Transaction
+                        </h2>
+
+                        <p class="text-muted">
+                            Are you sure you want to delete this transaction?
+                            This action cannot be undone.
+                        </p>
+
+                    </div>
+
+                    <hr />
+
+                    <!-- Title -->
+                    <div class="row py-2">
+                        <div class="col-5 text-muted">
+                            Title
+                        </div>
+
+                        <div class="col-7 fw-semibold">
+                            @Model.Title
+                        </div>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="row py-2">
+                        <div class="col-5 text-muted">
+                            Amount
+                        </div>
+
+                        <div class="col-7 fw-bold">
+                            ₹@Model.Amount.ToString("N2")
+                        </div>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="row py-2">
+                        <div class="col-5 text-muted">
+                            Category
+                        </div>
+
+                        <div class="col-7">
+                            @Model.Category
+                        </div>
+                    </div>
+
+                    <!-- Type -->
+                    <div class="row py-2">
+                        <div class="col-5 text-muted">
+                            Type
+                        </div>
+
+                        <div class="col-7">
+
+                            @if (Model.Type == "Income")
+                            {
+                                <span class="badge bg-success">
+                                    Income
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Expense
+                                </span>
+                            }
+
+                        </div>
+                    </div>
+
+                    <!-- Expense For -->
+                    <div class="row py-2">
+                        <div class="col-5 text-muted">
+                            Expense For
+                        </div>
+
+                        <div class="col-7">
+
+                            @if (Model.ExpenseFor == "Family")
+                            {
+                                <span class="badge bg-info text-dark">
+                                    Family
+                                </span>
+                            }
+                            else if (Model.ExpenseFor == "Personal")
+                            {
+                                <span class="badge bg-secondary">
+                                    Personal
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="row py-2">
+                        <div class="col-5 text-muted">
+                            Date
+                        </div>
+
+                        <div class="col-7">
+                            @Model.Date.ToString("dd MMM yyyy")
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="row py-2">
+                        <div class="col-5 text-muted">
+                            Notes
+                        </div>
+
+                        <div class="col-7">
+                            @(string.IsNullOrWhiteSpace(Model.Notes)
+                                ? "-"
+                                : Model.Notes)
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <!-- Delete Form -->
+                    <form asp-action="Delete" method="post">
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-flex justify-content-center gap-2 mt-4">
+
+                            <button type="submit"
+                                    class="btn btn-danger">
+                                Delete Transaction
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
